@@ -26,4 +26,17 @@ export function signToken(payload: jwtPayload) : string {
     return token; 
 }; 
 
-/*So when it comes to verifying token function what happens is that we take the incoming request which has to be the same type of data that we are expecting in our payload, check the "stamp" with our servers stamp aka the jwt_secret and then from there if it matches then we are good  */
+/*So when it comes to verifying token function what happens is that we take the incoming request which has to be the same type of data that we are expecting in our payload, check the "stamp" with our servers stamp aka the jwt_secret and then from there if it matches then we are good   
+
+FLOW TO FOLLOW: 
+
+token comes in
+  → check stamp matches JWT_SECRET  ✅
+  → return the payload              { userId: '1', username: 'ray', role: 'admin' }
+  → middleware attaches it to req.user
+  → your route handler can now use req.user*/ 
+  // When we say returning the payload we mean Whatever you passed in when you created the token, you get back when you verify it. 
+export function verifyToken(token : string) : jwtPayload { 
+    const verifyIncomingToken = jwt.verify(token, SECRET); 
+    return verifyIncomingToken as jwtPayload; 
+}; 
